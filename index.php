@@ -1,4 +1,9 @@
 <?php
+function format_sum ($num) {
+    $res = number_format(ceil($num), 0, '', ' ');
+    $res = $res . " &#8381;";
+    return $res;
+};
 
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 $lots = [
@@ -31,7 +36,7 @@ $lots = [
     'name' => 'Маска Oakley Canopy',
     'category' => 'Разное',
     'price' => '5400',
-    'url_path' => 'img/lot-6.jpg'],
+    'url_path' => 'img/lot-6.jpg']
 ];
 $is_auth = rand(0, 1);
 
@@ -116,7 +121,7 @@ $user_avatar = 'img/user.jpg';
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount"><?=$lot['price'];?></span>
-                                <span class="lot__cost">цена<b class="rub">р</b></span>
+                                <span class="lot__cost"><?=format_sum($lot['price']);?></span>
                             </div>
                             <div class="lot__timer timer">
                                 12:23
