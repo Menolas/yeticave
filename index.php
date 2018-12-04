@@ -1,23 +1,10 @@
 <?php
 
-error_reporting (E_ALL);
-ini_set ('display_errors', 1);
+//php -S 127.0.0.1:8000
 
-date_default_timezone_set ('Europe/Moscow');
+require('init.php');
 
-require('functions.php');
-
-$link = connect_db ();
-
-
-$categories = get_categories ($link);
 $lots = get_lots($link);
-
-$is_auth = rand(0, 1);
-
-$user_name = 'Menolas'; // укажите здесь ваше имя
-$user_avatar = 'img/user.jpg';
-
 
 $page_content = include_template('index.php', [
     'categories' => $categories,
@@ -32,4 +19,3 @@ $layout_content = include_template('layout.php', [
     'is_auth' => $is_auth]);
 
 print($layout_content);
-
