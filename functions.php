@@ -102,7 +102,7 @@ function time_left_till_midnight () {
 
 function get_lots ($con) {
   $sql = "
-    SELECT l.title, l.start_price, l.image, l.description, l.end_date, c.name AS category_name
+    SELECT l.id, l.title, l.start_price, l.image, l.description, l.end_date, c.name AS category_name
     FROM lots l
     JOIN categories c ON c.id = l.category_id
     WHERE l.end_date > NOW()
@@ -110,4 +110,19 @@ function get_lots ($con) {
 
   $lots = db_run_query($con, $sql);
   return $lots;
+};
+
+function get_lot ($con, $id) {
+  $sql = "
+    SELECT l.id, l.title, l.start_price, l.image, l.description, l.end_date, c.name AS category_name, MAX(b.amount) AS current_price, l.lot_step
+    FROM lots l
+    JOIN categories c ON c.id = l.category_id
+    JOIN bids b ON b.lot_id = l.id
+    WHERE l.id = $id;";
+  $lot = db_run_query($con, $sql);
+
+  if (count($lot)) {
+    return $lot;
+  }
+  return false;
 };
