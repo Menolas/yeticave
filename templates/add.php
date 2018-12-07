@@ -8,7 +8,7 @@
         <?php endforeach; ?>
       </ul>
     </nav>
-    <form class="form form--add-lot container" action="add.php" method="post"> <!-- form--invalid -->
+    <form class="form form--add-lot container <?php if(count($errors) > 0) { echo 'form--invalid';}; ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
       <h2>Добавление лота</h2>
       <div class="form__container-two">
         <div class="form__item"> <!-- form__item--invalid -->
@@ -21,7 +21,8 @@
           <select id="category" name="category" required>
             <option>Выберите категорию</option>
             <?php foreach ($categories as $category): ?>
-                <option><?=$category['name'];?></option>
+                <?php $selected = $category['id'] === $category_id ? 'selected' : ""; ?>
+                <option value="<?= $category['id']; ?>" <?= $selected; ?>><?= $category['name']; ?></option>
             <?php endforeach; ?>
           </select>
           <span class="form__error">Выберите категорию</span>
@@ -64,7 +65,14 @@
           <span class="form__error">Введите дату завершения торгов</span>
         </div>
       </div>
-      <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+      <?php if (count($errors) > 0): ?>
+          <span class="form__error form__error--bottom">Пожалуйста, исправьте следующие ошибки в форме:</span>
+          <ul>
+              <?php foreach ($errors as $err => $val): ?>
+                  <li><strong><?= $err; ?></strong> <?= $val; ?></li>
+              <?php endforeach; ?>
+          </ul>
+      <?php endif; ?>
       <button type="submit" class="button">Добавить лот</button>
     </form>
   </main>
