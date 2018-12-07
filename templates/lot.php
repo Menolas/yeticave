@@ -21,7 +21,7 @@
         <div class="lot-item__right">
           <div class="lot-item__state">
             <div class="lot-item__timer timer">
-              <?=time_left_till_midnight();?>
+              <?=time_left_till_midnight_format();?>
             </div>
             <div class="lot-item__cost-state">
               <div class="lot-item__rate">

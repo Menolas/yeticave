@@ -30,7 +30,7 @@
                                 <span class="lot__cost"><?=format_sum($lot['start_price']);?></span>
                             </div>
                             <div class="lot__timer timer">
-                                <?=time_left_till_midnight();?>
+                                <?=time_left_till_midnight_format();?>
                             </div>
                         </div>
                     </div>
