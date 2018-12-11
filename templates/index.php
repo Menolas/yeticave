@@ -19,7 +19,7 @@
             <?php foreach ($lots as $lot): ?>
                 <li class="lots__item lot">
                     <div class="lot__image">
-                        <img src="<?=$lot['image'];?>" width="350" height="260" alt="">
+                        <img src="img/<?=$lot['image'];?>" width="350" height="260" alt="">
                     </div>
                     <div class="lot__info">
                         <span class="lot__category"><?=$lot['category_name'];?></span>
@@ -30,7 +30,7 @@
                                 <span class="lot__cost"><?=format_sum($lot['start_price']);?></span>
                             </div>
                             <div class="lot__timer timer">
-                                <?=time_left_till_midnight();?>
+                                <?=time_left_till_midnight_format();?>
                             </div>
                         </div>
                     </div>

@@ -36,8 +36,6 @@ if (!isset($_GET['id'])) {
 
 $id = $_GET['id'];
 $lot = get_lot($link, $id)[0];
-var_dump($lot);
-die();
 
 $page_content = include_template('lot.php', [
 	'categories' => $categories,
