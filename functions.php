@@ -231,3 +231,73 @@ function db_insert_lot (
   return $res;
 }
 
+/**
+ * Добавить зарегестрированного пользователя в базу данных.
+ *
+ * @param object $con Ссылка для подключения к базе данных
+ * @param string $email Емейл пользователя
+ * @param string $name Имя пользователя
+ * @param string $password Пароль пользователя
+ * @param string $avatar URL аватара пользователя
+ * @param string $contacts Контакты пользователя
+ *
+ * @return object|false
+ */
+function db_insert_user ($con, $email, $name, $password, $avatar, $contacts) {
+
+  $filtered_email = mysqli_real_escape_string($con, $email);
+  $filtered_name = mysqli_real_escape_string($con, $name);
+  $filtered_password = mysqli_real_escape_string($con, $password);
+  $filtered_contacts = mysqli_real_escape_string($con, $contacts);
+  $sql = "
+    INSERT INTO users SET
+    email = '$filtered_email',
+    name = '$filtered_name',
+    password = '$filtered_password',
+    avatar = '$avatar',
+    contacts = '$filtered_contacts';";
+  $res = mysqli_query($con, $sql);
+
+  if (!$res) {
+    $error = mysqli_error($con);
+    print("Ошибка MySQL" . $error);
+    die();
+  }
+  return $res;
+}
+
+/**
+ * Получить массив емейлов пользователей  из базы данных.
+ *
+ * @param object $con Ссылка для подключения к базе данных
+ *
+ * @return array
+ */
+function get_users_emails ($con) {
+
+  $sql_emails = "SELECT email FROM users";
+  $result = db_run_query($con, $sql_emails);
+  return $result;
+}
+
+/**
+ * Найти пользователя по емейлу в базе данных.
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ * @param string $email Емейл пользователя
+ *
+ * @return array|false
+ */
+function find_user_by_email ($con, $email) {
+
+  $filtered_email = mysqli_real_escape_string($con, $email);
+  $sql_find_email = "
+    SELECT * FROM users WHERE email = '$filtered_email';";
+  $user = db_run_query($con, $sql_find_email);
+
+  if (count($user)) {
+    return $user[0];
+  } 
+  return false;
+}
+
