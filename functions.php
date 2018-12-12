@@ -128,7 +128,7 @@ function get_lots ($con) {
 function get_lot ($con, $id) {
   $sql = "
     SELECT l.id, l.title, l.start_price, l.image, l.description, l.end_date, 
-      c.name AS category_name, MAX(b.amount) AS current_price, l.lot_step, l.user_id
+      c.name AS category_name, MAX(b.amount) AS current_price, l.lot_step, l.user_id, MAX(b.amount) + l.lot_step AS min_bid
     FROM lots l
     JOIN categories c ON c.id = l.category_id
     JOIN bids b ON b.lot_id = l.id
