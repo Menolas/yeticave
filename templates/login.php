@@ -23,7 +23,7 @@
         echo 'form__item--invalid';
     }; ?>">
             <label for="password">Пароль*</label>
-            <input id="password" type="text" name="password" placeholder="Введите пароль" required>
+            <input id="password" type="text" name="password" placeholder="Введите пароль">
             <span class="form__error">Введите пароль</span>
         </div>
         <?php if (count($errors) > 0): ?>

@@ -128,7 +128,7 @@ function get_lots ($con) {
 function get_lot ($con, $id) {
   $sql = "
     SELECT l.id, l.title, l.start_price, l.image, l.description, l.end_date, 
-      c.name AS category_name, MAX(b.amount) AS current_price, l.lot_step
+      c.name AS category_name, MAX(b.amount) AS current_price, l.lot_step, l.user_id, MAX(b.amount) + l.lot_step AS min_bid
     FROM lots l
     JOIN categories c ON c.id = l.category_id
     JOIN bids b ON b.lot_id = l.id
@@ -139,6 +139,49 @@ function get_lot ($con, $id) {
     return $lot;
   }
   return false;
+}
+
+/**
+ * Найти пользователя по id в базе данных.
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ * @param integer $id ID пользователя
+ *
+ * @return array|false
+ */
+function get_user_by_id ($con, $id) {
+
+  $sql_get_user = "
+    SELECT * FROM users WHERE id = $id;";
+  $user = db_run_query($con, $sql_get_user);
+
+  if (count($user)) {
+    return $user[0];
+  } 
+  return false;
+}
+
+/**
+ * Получить ставки для конкретного лота по его id.
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ * @param integer $lot_id Id лота
+ *
+ * @return array
+ */
+function db_get_bids ($con, $lot_id) {
+
+  $sql_get_bids = "
+    SELECT u.name, b.amount, b.created_at, b.user_id
+    FROM bids b
+    JOIN users u ON u.id = b.user_id
+    JOIN lots l ON l.id = b.lot_id
+    WHERE l.id = $lot_id
+    ORDER BY b.created_at DESC;";
+
+    $bids = db_run_query($con, $sql_get_bids);
+    
+    return $bids;
 }
 
 /**
@@ -301,3 +344,62 @@ function find_user_by_email ($con, $email) {
   return false;
 }
 
+/**
+ * Выяснить есть ли в массиве ставок для определенного лота ставки сделанные определенным пользователем.
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ * @param number $id Id пользователя *
+ * @param number $id Id лота
+ *
+ * @return boolean
+ */
+function find_user_bid ($con, $id, $lot) {
+  
+  $sql_find_bid = "
+  SELECT b.lot_id
+  FROM bids b
+  WHERE b.user_id = $id;";
+  $bids = db_run_query($con, $sql_find_bid);
+
+  if ($bids) {
+    foreach ($bids as $bid) {
+      if ($bid['lot_id'] === $lot) {
+        return true;
+      }
+    } 
+  }
+  return false;
+}
+
+/**
+ * Вычислить не закончилось ли время торгов для конкретного лота.
+ *
+ * @param string $time Время окончания торгов.
+ *
+ * @return boolean
+ */
+function is_time_left ($time) {
+
+  $time_left = strtotime($time) - time();
+  if ($time_left > 0) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Вычислить время оставшееся до окончания торгов для конкретного лота.
+ *
+ * @param array $lot Лот.
+ *
+ * @return string
+ */
+function time_left ($lot) {
+    
+  $time_left = strtotime($lot['end_date']) - time();
+  $hours = floor($time_left / 3600);
+  $minutes = floor(($time_left % 3600) / 60);
+  $time_left = $hours . ":" . $minutes;
+
+  return $time_left;
+}

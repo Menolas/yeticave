@@ -19,28 +19,34 @@
           <p class="lot-item__description"><?=$lot['description'];?></p>
         </div>
         <div class="lot-item__right">
-          <div class="lot-item__state">
-            <div class="lot-item__timer timer">
-              <?=time_left_till_midnight_format();?>
+          <?php if (isset($_SESSION['user']) && is_time_left($lot['end_date']) && $user['id'] !== $lot['user_id'] && !find_user_bid($link, $user['id'], $lot['id'])): ?>
+
+            <div class="lot-item__state">
+                <div class="lot-item__timer timer">
+                  <?=time_left($lot); ?>
+                </div>
+                <div class="lot-item__cost-state">
+                    <div class="lot-item__rate">
+                        <span class="lot-item__amount"><?=$lot["start_price"];?></span>
+                        <span class="lot-item__cost"><?= format_sum($lot['current_price']) == 0 ? $lot['start_price'] : format_sum($lot['current_price']); ?></span>
+                    </div>
+                    <div class="lot-item__min-cost">
+                      Мин. ставка <span><?= count(db_get_bids($link, $lot['id'])) == 0 ? $lot['start_price'] : $lot['min_bid'];?> р</span>
+                    </div>
+                </div>
+                
+                <form class="lot-item__form" action="add-bid.php" method="post">
+                  <p class="lot-item__form-item">
+                    <label for="cost">Ваша ставка</label>
+                    <input id="cost" type="number" name="amount" placeholder="<?= count(db_get_bids($link, $lot['id'])) == 0 ? $lot['start_price'] : $lot['min_bid'];?> р">
+                    <input class="visually-hidden" type="text" name="lot_id" value="<?=$lot['id'];?>">
+                  </p>
+                  <button type="submit" class="button">Сделать ставку</button>
+                </form>
+                
             </div>
-            <div class="lot-item__cost-state">
-              <div class="lot-item__rate">
-                <span class="lot-item__amount"><?=$lot['start_price'];?></span>
-                <span class="lot-item__cost"><?=format_sum($lot['current_price']) == 0 ? format_sum($lot['start_price']) : format_sum($lot['current_price']); ?></span>
-              </div>
-              <div class="lot-item__min-cost">
-                Мин. ставка <span><?=format_sum($lot['current_price']) == 0 ? format_sum($lot['start_price'] + $lot['lot_step']) : format_sum($lot['current_price'] + $lot['lot_step']);?></span>
-              </div>
-            </div>
-            <!-- <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-              <p class="lot-item__form-item form__item form__item--invalid">
-                <label for="cost">Ваша ставка</label>
-                <input id="cost" type="text" name="cost" placeholder="12 000">
-                <span class="form__error">Введите наименование лота</span>
-              </p>
-              <button type="submit" class="button">Сделать ставку</button>
-            </form>
-          </div>
+          
+          <?php endif; ?>
           <div class="history">
             <h3>История ставок (<span>10</span>)</h3>
             <table class="history__list">
@@ -95,7 +101,7 @@
                 <td class="history__time">19.03.17 в 10:20</td>
               </tr>
             </table>
-          </div> -->
+          </div>
         </div>
       </div>
     </section>

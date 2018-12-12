@@ -2,6 +2,13 @@
 
 require('init.php');
 
+if (isset($_SESSION['user'])) {
+    $user = get_user_by_id($link, $_SESSION['user']['id']);
+} else {
+  http_response_code(403);
+  die();
+}
+
 $values = [];
 $errors = [];
 $selected = "";
@@ -108,8 +115,6 @@ $layout_content = include_template ('layout.php', [
   'page_content' => $page_content,
   'categories' => $categories,
   'title' => 'Yeticave - Главная страница',
-  'is_auth' => $is_auth,
-  'user_name' => $user_name,
-  'user_avatar' => $user_avatar,]);
+  'user' => $user]);
 
 print($layout_content);
