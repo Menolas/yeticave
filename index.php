@@ -5,6 +5,7 @@
 require('init.php');
 
 $lots = get_lots($link);
+$title = 'Yeticave -  главная';
 
 $page_content = include_template('index.php', [
     'categories' => $categories,
@@ -13,7 +14,7 @@ $page_content = include_template('index.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'categories' => $categories,
-    'title' => 'Yeticave - Главная страница',
+    'title' => $title,
     'user' => $user]);
 
 print($layout_content);

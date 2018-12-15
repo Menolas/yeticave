@@ -2,6 +2,7 @@
 
 require('init.php');
 
+$title = 'Yeticave - login';
 $values = [];
 $errors = [];
 $user = [];
@@ -84,7 +85,7 @@ $page_content = include_template('login.php', [
 $layout_content = include_template ('layout.php', [
     'page_content' => $page_content,
     'categories' => $categories,
-    'title' => 'Yeticave - Главная страница',
+    'title' => $title,
     'user' => $user]);
 
 print($layout_content);

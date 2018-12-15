@@ -2,6 +2,8 @@
 
 require('init.php');
 
+$title = 'Yeticave - лот';
+
 if (!isset($_GET['id'])) {
   
   $page_content = include_template('404.php', [
@@ -10,9 +12,7 @@ if (!isset($_GET['id'])) {
     'page_content' => $page_content,
     'categories' => $categories,
     'title' => 'Yeticave - Главная страница',
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
-    'is_auth' => $is_auth]);
+    'user' => $user]);
   print($layout_content);
   die();
   
@@ -21,14 +21,13 @@ if (!isset($_GET['id'])) {
     if (!get_lot($link, $id)) {
         
       $page_content = include_template('404.php', [
-	    'categories' => $categories]);
+	    'categories' => $categories,
+            'bids' => $bids]);
       $layout_content = include_template('layout.php', [
 		'page_content' => $page_content,
 		'categories' => $categories,
-		'title' => 'Yeticave - Главная страница',
-		'user_name' => $user_name,
-		'user_avatar' => $user_avatar,
-		'is_auth' => $is_auth]);
+		'title' => $title,
+		'user' => $user]);
       print($layout_content);
       die();
     }
@@ -36,17 +35,19 @@ if (!isset($_GET['id'])) {
 
 $id = $_GET['id'];
 $lot = get_lot($link, $id)[0];
+$bids = db_get_bids($link, $id);
 
 $page_content = include_template('lot.php', [
 	'categories' => $categories,
 	'id' => $id,
         'lot' => $lot,
         'user' => $user,
-        'link' => $link]);
+        'link' => $link,
+        'bids' => $bids]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'categories' => $categories,
-    'title' => 'Yeticave - Главная страница',
+    'title' => $title,
     'user' => $user]);
 
 print($layout_content);

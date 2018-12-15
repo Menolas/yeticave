@@ -185,6 +185,28 @@ function db_get_bids ($con, $lot_id) {
 }
 
 /**
+ * Отформатировать дату создания ставки в человеческий формат.
+ *
+ * @param string $time Дата создания ставки
+ *
+ * @return string
+ */
+function get_time_bid_created ($time) {
+
+  $time_gone = time() - strtotime($time);
+
+  if ($time_gone < 60) {
+    return "только что";
+  } else if ($time_gone < 3600) {
+      return floor($time_gone / 60) . " минут назад";
+  } else if ($time_gone < 86400) {
+      return floor($time_gone / 3600) . " часов назад";
+  }
+
+  return floor($time_gone / 86400) . " дней назад";
+}
+
+/**
  * Получить расширение файла.
  *
  * @param array $key член массива $_FILE под ключом ['image']
@@ -300,6 +322,37 @@ function db_insert_user ($con, $email, $name, $password, $avatar, $contacts) {
     avatar = '$avatar',
     contacts = '$filtered_contacts';";
   $res = mysqli_query($con, $sql);
+
+  if (!$res) {
+    $error = mysqli_error($con);
+    print("Ошибка MySQL" . $error);
+    die();
+  }
+  return $res;
+}
+
+/**
+ * Добавить ставку для определенного лота от определенного пользователя в базу данных.
+ *
+ * @param object $con Ссылка для подключения к базе данных
+ * @param integer $amount Сумма ставки
+ * @param integer $id Id пользователя *
+ * @param integer $id Id лота
+ *
+ * @return object|false
+ */
+function db_insert_bid ($con, $amount, $user_id, $lot_id) {
+
+  $filtered_amount = mysqli_real_escape_string($con, $amount);
+  $filtered_user_id = mysqli_real_escape_string($con, $user_id);
+  $filtered_lot_id = mysqli_real_escape_string($con, $lot_id);
+  $sql_insert_bid = "
+    INSERT INTO bids SET
+    amount = $filtered_amount,
+    user_id = $filtered_user_id,
+    lot_id = $filtered_lot_id;";
+
+  $res = mysqli_query($con, $sql_insert_bid);
 
   if (!$res) {
     $error = mysqli_error($con);

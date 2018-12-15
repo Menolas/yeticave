@@ -2,6 +2,8 @@
 
 require('init.php');
 
+$title = 'Yeticave - Добавление нового лота';
+
 if (isset($_SESSION['user'])) {
     $user = get_user_by_id($link, $_SESSION['user']['id']);
 } else {
@@ -93,8 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (count($errors) === 0) {
       
-      $user_id = 1;
-      $res = db_insert_lot ($link, $values['category'], $values['title'], $values['description'], $values['start_price'], $values['end_date'], $values['image'], $values['lot_step'], $user_id);
+      $res = db_insert_lot ($link, $values['category'], $values['title'], $values['description'], $values['start_price'], $values['end_date'], $values['image'], $values['lot_step'], $user['id']);
 
       if ($res) {
         $lot_id = mysqli_insert_id($link);
@@ -114,7 +115,7 @@ $page_content = include_template('add.php', [
 $layout_content = include_template ('layout.php', [
   'page_content' => $page_content,
   'categories' => $categories,
-  'title' => 'Yeticave - Главная страница',
+  'title' => $title,
   'user' => $user]);
 
 print($layout_content);
