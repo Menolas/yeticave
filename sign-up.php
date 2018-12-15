@@ -4,7 +4,7 @@ require('init.php');
 
 $values = [];
 $errors = [];
-
+$title = 'Yeticave - регистрация пользователя';
 // проверка отправлена ли форма
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -126,7 +126,7 @@ $page_content = include_template('sign-up.php', [
 $layout_content = include_template ('layout.php', [
     'page_content' => $page_content,
     'categories' => $categories,
-    'title' => 'Yeticave - Главная страница',
+    'title' => $title,
     'user' => $user]);
 
 print($layout_content);
