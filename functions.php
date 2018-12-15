@@ -142,6 +142,54 @@ function get_lot ($con, $id) {
 }
 
 /**
+ * Получить количество лотов из базы данных удовлетворяющих параметру поиска.
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ * @param string $search Строка поиска
+ *
+ * @return integer
+ */
+function get_searched_lots ($con, $search) {
+  $sql = "
+    SELECT l.id
+    FROM lots l
+    WHERE MATCH(l.title, l.description) AGAINST('$search');";
+
+    $lots = db_run_query($con, $sql);
+    
+    return $lots;
+}
+
+/**
+ * Получить лоты из базы данных удовлетворяющие параметру поиска.
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ * @param string $search Строка поиска
+ * @param integer $page_items Количество страниц для пагинации
+ * @param integer $offset Количество объектов на которое производится смещение по таблице данных
+ *
+ * @return array|false
+ */
+function get_lots_searched ($con, $search, $page_items, $offset) {
+
+  $sql_search_lot = "
+    SELECT l.id, l.title, l.start_price, l.image, c.name AS category_name, l.description, MAX(b.amount) + l.lot_step AS min_bid, MAX(b.amount) AS current_price, l.end_date
+    FROM lots l
+    JOIN categories c ON c.id = l.category_id
+    LEFT JOIN bids b ON b.lot_id = l.id
+    WHERE MATCH(l.title, l.description) AGAINST('$search')
+    GROUP BY l.id
+    ORDER BY l.created_at DESC LIMIT " . $page_items . " OFFSET " . $offset;
+
+    $lots_searched = db_run_query($con, $sql_search_lot);
+
+    if (count($lots_searched)) {
+      return $lots_searched;
+    }
+    return false;
+}
+
+/**
  * Найти пользователя по id в базе данных.
  *
  * @param object $con Ссылка для подключения к базе данных *
