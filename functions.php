@@ -190,6 +190,28 @@ function get_lots_searched ($con, $search, $page_items, $offset) {
 }
 
 /**
+ * Получить массив лотов без победителей у кторых закончилось время торгов
+ *
+ * @param object $con Ссылка для подключения к базе данных *
+ *
+ * @return array
+ */
+function get_no_winners_lots ($con) {
+  $sql = "
+    SELECT l.id, l.title
+    FROM lots l
+    WHERE l.winner_id IS NULL AND l.end_date <= CURDATE()
+    GROUP BY l.id;";
+
+  $lots = db_run_query($con, $sql);
+ 
+  if ($lots) {
+    return $lots;
+  }
+  return false;
+}
+
+/**
  * Найти пользователя по id в базе данных.
  *
  * @param object $con Ссылка для подключения к базе данных *

@@ -3,6 +3,7 @@
 //php -S 127.0.0.1:8000
 
 require('init.php');
+require('getwinner.php');
 
 $lots = get_lots($link);
 $title = 'Yeticave -  главная';
