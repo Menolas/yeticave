@@ -49,22 +49,22 @@ Main entities:
    
 2. Lot
 
-  Fields:
-  * date of creation
-  * date of ending
-  * category id
-  * title
-  * description
-  * image
-  * start price
-  * lot step
-  * created user
-  * winner id
+   Fields:
+   * date of creation
+   * date of ending
+   * category id
+   * title
+   * description
+   * image
+   * start price
+   * lot step
+   * created user
+   * winner id
   
-  Relations:
-  * user - creator of the lot
-  * category - category of the lot
-  * winner - who won the lot
+   Relations:
+   * user - creator of the lot
+   * category - category of the lot
+   * winner - who won the lot
   
 
 3. Bid
