@@ -27,36 +27,63 @@ Implemented Functionality:
 * Creating new bids.
 * server validation of the forms with displaying all errors.
 
-Список экранов:
+List of the screens:
 
-1. Главная страница (боковое меню и список задач).
-2. Регистрация аккаунта.
-3. Авторизация на сайте (модальное окно).
-4. Добавление лота.
-5. Добавление ставки.
+1. Main page.
+2. Sign UP page.
+3. Log Inn page.
+4. Creating a lot.
+5. Creating a bid.
 
-Основные сущности:
+Main entities:
 
-1. Лот
+1. User
 
-  Поля:
-  дата создания
-  название
+   Fields:
+   * created time
+   * email
+   * name
+   * password
+   * avatar
+   * contacts
+   
+2. Lot
+
+  Fields:
+  * date of creation
+  * date of ending
+  * category id
+  * title
+  * description
+  * image
+  * start price
+  * lot step
+  * created user
+  * winner id
   
-  Связи:
-  автор — пользователь, создавший задачу;
-  проект — проект, к которому принадлежит задача.
-  Пользователь
-  Представляет зарегистрированного пользователя.
+  Relations:
+  * user - creator of the lot
+  * category - category of the lot
+  * winner - who won the lot
+  
 
+3. Bid
 
-2. Ставка
+   Fields:
+   * date of creation
+   * amount
+   * user id
+   * lot id
+   
+   Relations:
+   * Lot
+   * User
+   
+4. Category
+   
+   Fields:
+   * name
 
-   Поля:
-   дата создания;
-   название;
+Only logged inn users can see and make the bids and create the lots.
 
-
-Сайт могут использовать только зарегистрированные пользователи.
-
-Анонимный пользователь всегда видит только страницу входа на сайт.
+Not logged Inn users can just see the lots.
