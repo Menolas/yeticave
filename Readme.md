@@ -1,23 +1,21 @@
 # Личный проект «YetiCave»
 studying project (PHP step 1 - HTML Academy)
 
-Используемые технологии: PHP 7.0+ / MySQL 5.7+.
+Used Technologies: PHP 7.0+ / MySQL 5.7+.
 
-«YetiCave» — это онлайн аукцион. Сервис помогает пользователям найти и поставить ставки на существующие лоты, а так же создать свои лоты.
+«YetiCave» — this is an online auction. The service helps users find and place bids on existing lots, as well as create their own lots.
 
-После создания аккаунта пользователь может начать делать ставки и создавать свои лоты.
+After creating an account, the user can start placing bids and creating their lots.
 
-Основные сценарии использования сайта:
+The main scenarios for using the site:
 
-* создание лотов
-* создание ставок
-* просмотр лотов
+* creation of lots
+* creating bids
+* viewing lots
 
-Данные для доступа к БД MySQL: root / root.
+BD credentials MySQL: root / ''.
 
-Для полноценной работы с MySQL может потребоваться включить расширение mysqli в php.ini и доставить необходимые драйвера.
-
-Готовая схема БД находится в корне проекта (schema.sql).
+The BD scheme is in the root of the project (schema.sql).
 
 <!--Чтобы создать трех тестовых пользователей со списком задач для одного из них (Игнат), необходимо выполнить строки с 1-й по 28-ю в файле queries.sql.
 
