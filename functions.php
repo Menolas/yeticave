@@ -7,7 +7,7 @@
  */
 function connect_db () {
 
-  $link = mysqli_connect('127.0.0.1', 'root', 'r512lock', 'yeticave');
+  $link = mysqli_connect('127.0.0.1', 'root', '', 'yeticave');
   mysqli_set_charset($link, 'utf8');
 
   if (!$link) {
